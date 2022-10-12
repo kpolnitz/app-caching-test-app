@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import * as microsoftTeams from "@microsoft/teams-js";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Tab } from "./Tab";
+import { TabConfig } from "./TabConfig";
 
 function App() {
+  microsoftTeams.initialize();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          We have added most recent changes.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <h3>App Caching</h3>
+    <Router>
+      <Switch>
+        <Route path="/config">
+          <TabConfig />
+        </Route>
+        <Route path="/tab">
+          <Tab />
+        </Route>
+      </Switch>
+    </Router>
     </div>
+
   );
 }
 
