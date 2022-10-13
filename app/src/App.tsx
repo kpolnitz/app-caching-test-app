@@ -7,8 +7,6 @@ import { TabConfig } from "./TabConfig";
 function App() {
   microsoftTeams.initialize();
   return (
-    <div>
-    <h3>App Caching</h3>
     <Router>
       <Switch>
         <Route path="/config">
@@ -19,8 +17,6 @@ function App() {
         </Route>
       </Switch>
     </Router>
-    </div>
-
   );
 }
 

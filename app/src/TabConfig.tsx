@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import "./App.css";
 import * as microsoftTeams from "@microsoft/teams-js";
 
@@ -30,23 +30,12 @@ export const TabConfig = () => {
    */
   microsoftTeams.settings.setValidityState(true);
 
-  const onBtnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log("we hit the button in config");
-  };
-
   return (
     <div>
-      <h1>Tab Configuration</h1>
+      <h1>App Caching</h1>
       <div>
-        This is where you will add your tab configuration options the user can
-        choose when the tab is added to your team/group chat.
+        This is the test app for app caching. This app only works in the side panel for testing purposes.
       </div>
-      <input
-        type="radio"
-        name="TabConfig"
-        onChange={onBtnChange}
-      />{" "}
-      Normal
     </div>
   );
 };

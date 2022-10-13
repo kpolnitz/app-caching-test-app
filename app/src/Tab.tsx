@@ -70,8 +70,11 @@ export const Tab = () => {
         const newItem = logItem("Success", "green", "Loaded Teams context");
         setItems((oldItems) => [...oldItems, newItem]);
         setTitle(context.entityId);
-
+        const newItem2 = logItem("FrameContext", "orange", "Frame context is " + context.frameContext);
+        setItems((oldItems) => [...oldItems, newItem2]);
         if (context.frameContext === "sidePanel") {
+          const newItem = logItem("Handlers", "orange", "Registering load and before unload handlers");
+          setItems((oldItems) => [...oldItems, newItem]);
           // ############################################
           // OnBeforeUnload
           microsoftTeams.registerBeforeUnloadHandler((readyToUnload) => {
