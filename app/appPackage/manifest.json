@@ -34,9 +34,5 @@
     }
   ],
   "validDomains": ["jolly-sea-0e533fe1e.2.azurestaticapps.net"],
-  "showLoadingIndicator": true,
-  "webApplicationInfo": {
-    "id": "bbd941df-1c15-47b4-aeec-3e3fa0536470",
-    "resource": "api://jolly-sea-0e533fe1e.2.azurestaticapps.net/bbd941df-1c15-47b4-aeec-3e3fa0536470"
-  }
+  "showLoadingIndicator": true
 }
