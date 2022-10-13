@@ -44,7 +44,7 @@ const loadHandler = (
     setItems((oldItems) => [...oldItems, newItem]);
     console.log("sending notifyAppLoaded to TEAMS");
 
-    microsoftTeams.app.notifySuccess();
+    microsoftTeams.appInitialization.notifySuccess();
   }, timeout);
 };
 
@@ -58,10 +58,7 @@ export const Tab = () => {
     }
     window.performance.mark("Teams-GetTabContextStart");
     // get context
-
-
-    microsoftTeams.app.getContext().then(
-      (context: microsoftTeams.app.Context) => {
+    microsoftTeams.getContext((context: microsoftTeams.Context) => {
       window.performance.mark("Teams-GetTabContextEnd");
       window.performance.measure(
         "Teams-GetTabContext",
@@ -72,19 +69,19 @@ export const Tab = () => {
         console.log("got context from TEAMS", context);
         const newItem = logItem("Success", "green", "Loaded Teams context");
         setItems((oldItems) => [...oldItems, newItem]);
-        setTitle(context.page.id);
+        setTitle(context.entityId);
 
-        if (context.page.frameContext === "sidePanel") {
+        if (context.frameContext === "sidePanel") {
           // ############################################
           // OnBeforeUnload
-          microsoftTeams.teamsCore.registerBeforeUnloadHandler((readyToUnload) => {
+          microsoftTeams.registerBeforeUnloadHandler((readyToUnload) => {
             const result = beforeUnloadHandler(setItems, readyToUnload);
             return result;
           });
 
           // ############################################
           // OnLoad
-          microsoftTeams.teamsCore.registerOnLoadHandler((data) => {
+          microsoftTeams.registerOnLoadHandler((data) => {
             loadHandler(setItems, data);
           });          
         }
@@ -102,7 +99,7 @@ export const Tab = () => {
     const timeout = 2000;
     setTimeout(() => {
       console.log("sending notifySuccess to TEAMS");
-      microsoftTeams.app.notifySuccess();
+      microsoftTeams.appInitialization.notifySuccess();
       setInitState(true);
     }, timeout);
   }, []);
@@ -110,12 +107,11 @@ export const Tab = () => {
   React.useEffect(() => {
     if (initState) {
       console.log("invoke auth token");
-      try {
-        microsoftTeams.authentication.getAuthToken()
-      }
-      catch {
-        console.log("error");
-      }
+      microsoftTeams.authentication.getAuthToken({
+        successCallback: (token) => console.log("got token", token),
+        failureCallback: (reason) =>
+          console.log("failed to get token", reason),
+      });
     }
   }, [initState]);
 
