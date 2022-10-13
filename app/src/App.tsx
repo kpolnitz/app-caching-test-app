@@ -5,7 +5,7 @@ import { Tab } from "./Tab";
 import { TabConfig } from "./TabConfig";
 
 function App() {
-  microsoftTeams.initialize();
+  microsoftTeams.app.initialize();
   return (
     <div>
     <h3>App Caching</h3>
