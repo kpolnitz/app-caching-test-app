@@ -83,9 +83,12 @@ export const Tab = () => {
   }, [initState]);
 
   React.useEffect(() => {
+    const timeout = 2000;
+    setTimeout(() => {
       console.log("sending notifySuccess to TEAMS");
       microsoftTeams.appInitialization.notifySuccess();
       setInitState(true);
+    }, timeout);
   }, []);
 
   React.useEffect(() => {
