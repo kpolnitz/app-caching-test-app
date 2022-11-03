@@ -21,13 +21,10 @@ const beforeUnloadHandler = (
   console.log("got beforeUnload from TEAMS");
   let newItem = logItem("OnBeforeUnload", "purple", "Started");
   setItems((oldItems) => [...oldItems, newItem]);
-
-  setTimeout(() => {
-    newItem = logItem("OnBeforeUnload", "purple", "Completed");
-    setItems((oldItems) => [...oldItems, newItem]);
-    console.log("sending readyToUnload to TEAMS");
-    readyToUnload();
-  }, 2000);
+  newItem = logItem("OnBeforeUnload", "purple", "Completed");
+  setItems((oldItems) => [...oldItems, newItem]);
+  console.log("sending readyToUnload to TEAMS");
+  readyToUnload();
   return true;
 };
 
@@ -37,15 +34,9 @@ const loadHandler = (
   ) => {
   console.log("got load from TEAMS", data);
   logItem("OnLoad", "blue", "Started for " + data.entityId);
-
-  const timeout = 1000;
-  setTimeout(() => {
-    let newItem = logItem("OnLoad", "blue", "Completed for " + data.entityId);
-    setItems((oldItems) => [...oldItems, newItem]);
-    console.log("sending notifyAppLoaded to TEAMS");
-
-    microsoftTeams.appInitialization.notifySuccess();
-  }, timeout);
+  let newItem = logItem("OnLoad", "blue", "Completed for " + data.entityId);
+  setItems((oldItems) => [...oldItems, newItem]);
+  microsoftTeams.appInitialization.notifySuccess();
 };
 
 export const Tab = () => {
@@ -56,15 +47,8 @@ export const Tab = () => {
     if (!initState) {
       return;
     }
-    window.performance.mark("Teams-GetTabContextStart");
     // get context
     microsoftTeams.getContext((context: microsoftTeams.Context) => {
-      window.performance.mark("Teams-GetTabContextEnd");
-      window.performance.measure(
-        "Teams-GetTabContext",
-        "Teams-GetTabContextStart",
-        "Teams-GetTabContextEnd"
-      );
       if (context) {
         console.log("got context from TEAMS", context);
         const newItem = logItem("Success", "green", "Loaded Teams context");
@@ -73,8 +57,6 @@ export const Tab = () => {
         const newItem2 = logItem("FrameContext", "orange", "Frame context is " + context.frameContext);
         setItems((oldItems) => [...oldItems, newItem2]);
         if (context.frameContext === "sidePanel") {
-          const newItem = logItem("Handlers", "orange", "Registering load and before unload handlers");
-          setItems((oldItems) => [...oldItems, newItem]);
           // ############################################
           // OnBeforeUnload
           microsoftTeams.registerBeforeUnloadHandler((readyToUnload) => {
@@ -86,7 +68,9 @@ export const Tab = () => {
           // OnLoad
           microsoftTeams.registerOnLoadHandler((data) => {
             loadHandler(setItems, data);
-          });          
+          }); 
+          const newItem = logItem("Handlers", "orange", "Registered load and before unload handlers. Ready for app caching.");
+          setItems((oldItems) => [...oldItems, newItem]);         
         }
       } else {
         let newItem = logItem("ERROR", "red", "could not get context");
@@ -99,12 +83,9 @@ export const Tab = () => {
   }, [initState]);
 
   React.useEffect(() => {
-    const timeout = 2000;
-    setTimeout(() => {
       console.log("sending notifySuccess to TEAMS");
       microsoftTeams.appInitialization.notifySuccess();
       setInitState(true);
-    }, timeout);
   }, []);
 
   React.useEffect(() => {
