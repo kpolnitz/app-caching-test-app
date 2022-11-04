@@ -91,16 +91,6 @@ export const Tab = () => {
     }, timeout);
   }, []);
 
-  React.useEffect(() => {
-    if (initState) {
-      console.log("invoke auth token");
-      microsoftTeams.authentication.getAuthToken({
-        successCallback: (token) => console.log("got token", token),
-        failureCallback: (reason) =>
-          console.log("failed to get token", reason),
-      });
-    }
-  }, [initState]);
 
   const jsx = initState ? (
     <div>
